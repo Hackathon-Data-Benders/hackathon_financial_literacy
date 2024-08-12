@@ -1,21 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
-import pyrebase
-import secrets
-import content
+import pyrebase, secrets
+from config import firebase_config as config
+import content, ai_process 
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-
-config = {
-    "apiKey": "",
-    'authDomain': "vitc-hackathon.firebaseapp.com",
-    'databaseURL': "https://vitc-hackathon-default-rtdb.asia-southeast1.firebasedatabase.app",
-    'projectId': "vitc-hackathon",
-    'storageBucket': "vitc-hackathon.appspot.com",
-    'messagingSenderId': "101699835554",
-    'appId': "1:101699835554:web:45b404e97ff504610029fb",
-    'measurementId': "G-H8VQGB4S1Y"
-}
 
 firebase = pyrebase.initialize_app(config)
 
@@ -23,11 +12,13 @@ db = firebase.database()
 auth = firebase.auth()
 # storage = firebase.storage()
 
+user = None
+questions = content.questions
+courses = content.courses
 
 @app.route('/')
 def index():
     return render_template('index.html', logged_in='user' in session)
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,6 +35,9 @@ def register():
         try:
             auth.create_user_with_email_and_password(email, password)
             flash('Registration successful! Please log in.')
+            user = auth.sign_in_with_email_and_password(email, password)
+            print(user)
+            session['user'] = user['idToken'] 
             return redirect(url_for('personalized_test'))
 
         except Exception as e:
@@ -56,25 +50,40 @@ def register():
 def personalized_test():
     return render_template('personalized_test.html')
 
+@app.route('/learn', methods=['GET', 'POST'])
+def learn():
+    return render_template('learn.html', logged_in='user' in session)
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    return render_template('profile.html',username='%.9s' % user["email"].split("@")[0], logged_in='user' in session)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    global user
+    # print("ello")
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
+        # print("ello")
         try:
             user = auth.sign_in_with_email_and_password(email, password)
+            print(user)
             session['user'] = user['idToken']  # Save user token in session
+            # print("Session set:", session.get('user'))
+            # print("Huhhhh")
             flash('Login successful!')
             return redirect(url_for('index'))
         except Exception as e:
+            print(e)
             flash(f'Error: {e}')
+    print("But why")
     return render_template('login.html')
 
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about.html', logged_in='user' in session)
 
 
 @app.route('/logout')
@@ -83,10 +92,6 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('index'))
 
-
-questions = content.questions
-
-
 @app.route('/get-questions', methods=['GET'])
 def get_questions():
     return jsonify(questions)
@@ -94,13 +99,38 @@ def get_questions():
 
 @app.route('/submit-answers', methods=['GET', 'POST'])
 def submit_answers():
-    data = request.get_json()
-    user_id = 'some_user_id'  # Replace with actual user ID or identifier
-    # Store or process the answers
-    # For demo, just print them
-    print(data)
-    return jsonify({'message': 'Answers received successfully!'})
+    request_data = request.get_json()
+    user_id = 'some_user_id'  # Placeholder for user identification logic
+    answers = request_data['answers'].split('%')[0].split("\n")
+    formatted_responses = ""
+    index = 0
 
+    print("Processing answers...")
+    print(answers)
+
+    while index < len(answers) - 1:
+        line = answers[index]
+        if not line:
+            index += 1
+            continue
+
+        print(line)
+        question_key = line.split(" ")[1]
+        print(questions[question_key])
+
+        if line.startswith("Q"):
+            question_number = line.split(" ")[0]
+            formatted_responses += f"{question_number} {questions[question_key]['text']}\n"
+            formatted_responses += f"{answers[index + 1]}\n"
+            index += 1  # Skip the next line as it's already processed
+
+        index += 1
+
+    print(formatted_responses)
+    recommendations = ai_process.get_course_recommendations(formatted_responses, courses)
+    print(recommendations)
+
+    return jsonify({'message': 'Answers received successfully!'})
 
 if __name__ == '__main__':
     app.run(debug=True)

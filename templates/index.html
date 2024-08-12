@@ -9,35 +9,7 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="/static/src/logo.svg" alt="Pluotos Logo" class="logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Learn</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('about') }}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url_for('login') }}" class="btn btn-primary me-2">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    {% include 'navbar.html' %}
     
     <!-- Hero Section -->
     <section class="hero-section d-flex align-items-center justify-content-center text-center">
@@ -45,8 +17,8 @@
             <h1 class="hero-title">AI-Powered Financial Literacy Platform</h1>
             <p class="hero-subtitle">Empowering Women and Youth for Inclusive Growth Building a Future of Financial Independence</p>
             <div>
-                <a href="#" class="btn btn-primary btn-lg">Start Learning</a>
-                <a href="#" class="btn btn-outline-light btn-lg">Learn More</a>
+                <a href="{{ url_for('learn') }}" class="btn btn-primary btn-lg">Start Learning</a>
+                <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">Learn More</a>
             </div>
         </div>
     </section>

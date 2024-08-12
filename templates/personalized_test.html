@@ -9,11 +9,6 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"> <!-- Link to your existing styles -->
 </head>
 <body>
-    <!-- User Dashboard Content -->
-    <div class="container mt-5">
-        <h1>Welcome to Your Dashboard</h1>
-        <p>This is your dashboard where you can access your content.</p>
-    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
@@ -50,20 +45,20 @@
                     for (var key in data) {
                         if (data.hasOwnProperty(key)) {
                             var question = data[key];
-                            if(question.type==1){
-                                var questionHTML = `<div class="mb-4">
-                                    <label class="form-label">${question.text}</label>`;
-                                question.options.forEach((option, index) => {
-                                    questionHTML += `<div class="form-check mb-3">
-                                        <input class="form-check-input" type="radio" name="${key}" id="${key}_${index}" value="${option}">
-                                        <label class="form-check-label" for="${key}_${index}">
-                                            ${option}
-                                        </label>
-                                    </div>`;
-                                });
-                                questionHTML += `</div>`;
-                                questionsContainer.innerHTML += questionHTML;
-                            }
+                            // if(question.type==1){    
+                            var questionHTML = `<div class="mb-4">
+                                <label class="form-label">${question.text}</label>`;
+                            question.options.forEach((option, index) => {
+                                questionHTML += `<div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="${key}" id="${key}_${index}" value="${option}" required>
+                                    <label class="form-check-label" for="${key}_${index}" required>
+                                        ${option}
+                                    </label>
+                                </div>`;
+                            });
+                            questionHTML += `</div>`;
+                            questionsContainer.innerHTML += questionHTML;
+                            // }
                         }
                     }
                     questionModal.show();
@@ -79,16 +74,27 @@
 
                 console.log(answers);
 
-                // Send answers to the server
+                // Format the answers
+                var formattedAnswers = '';
+                for (var question in answers) {
+                    console.log(question)
+                    if (answers.hasOwnProperty(question)) {
+                        formattedAnswers += `Q: ${question.replace(/_/g, ' ')}%A: ${answers[question]}\n`;
+                    }
+                }
+
+                // Send formatted answers to the server
                 fetch('/submit-answers', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(answers)
+                    body: JSON.stringify({ answers: formattedAnswers })
                 }).then(response => console.log(response))
                   .then(data => {
-                    window.location.href = "{{ url_for('index') }}";
+                      console.log(data);
+                      // Redirect to the index page after successful submission
+                      window.location.href = "{{ url_for('index', logged_in = True) }}";
                   }).catch(error => {
                       console.error('Error:', error);
                   });
