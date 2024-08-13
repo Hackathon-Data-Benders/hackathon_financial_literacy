@@ -9,7 +9,7 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"> <!-- Link to your existing styles -->
 </head>
 <body>
-
+    {% include 'flash.html' %}
     <!-- Modal -->
     <div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

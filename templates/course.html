@@ -2,32 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.    <title>{{ course['title'] }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/public/src/style.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
     <style>
-        /* Hero Section */
         .hero-section {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #1a1a1a; /* Replace with desired background color */
+            background-color: #1a1a1a;
             padding: 0 50px;
         }
 
         .hero-content {
             display: flex;
-            width: 80%; /* Occupy 80% of the screen width */
+            width: 80%;
             align-items: center;
             justify-content: space-between;
         }
 
         .hero-section img {
-            max-width: 45%; /* Adjusted max-width to ensure image fits */
+            max-width: 45%;
             height: auto;
-            object-fit: contain; /* Ensures the image is fully visible */
+            object-fit: contain;
         }
 
         .course-info {
@@ -47,7 +45,6 @@
             line-height: 1.5;
         }
 
-        /* Dropdown Sections */
         .dropdown-section {
             background-color: #222;
             color: #fff;
@@ -93,81 +90,40 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     {% include 'navbar.html' %}
 
-    <!-- Hero Section -->
     <div class="hero-section">
         <div class="hero-content">
-            <img src="/public/src/finance1.svg" alt="Course Image">
-            <div class="course-info">
-                <h1>Basics Of Finance</h1>
-                <p>This course is designed to provide a solid foundation in financial literacy, covering essential concepts and practical skills that everyone needs to manage their finances effectively.</p>
+            <img src="{{ url_for('static', filename='src/finance1.svg') }}" alt="Course Image">
+            <div class="course-info"y>
+                <h1>{{ course['title'] }}</h1>
+                <p>{{ course['description'] }}</p>
             </div>
         </div>
     </div>
 
-    <!-- Dropdown Sections -->
     <div class="container mt-5">
-        <div class="dropdown-section" onclick="toggleDropdown('videoSection')">
-            <div class="dropdown-title">Module 1: Fundamentals of Finance and Economics</div>
-            <div class="dropdown-content" id="videoSection">
-                <div class="video-embed">
-                    <iframe src="https://www.youtube.com/embed/video_id" title="YouTube video" allowfullscreen></iframe>
-                    <div class="video-description">
-                        <p>To gain a solid understanding of the foundational concepts in finance and economics, this video provides a comprehensive overview...</p>
+        {% if course['type'] == 'video' %}
+            <div class="dropdown-section" onclick="toggleDropdown('videoSection')">
+                <div class="dropdown-title">Video Module</div>
+                <div class="dropdown-content" id="videoSection">
+                    <div class="video-embed">
+                        <iframe src="{{ course['link'] | replace('watch?v=', 'embed/') }}" title="YouTube video" allowfullscreen></iframe>
+                        <div class="video-description">
+                            <p>{{ course['description'] }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="dropdown-section" onclick="toggleDropdown('articleSection')">
-            <div class="dropdown-title">Module 2: What does finance mean?</div>
-            <div class="dropdown-content" id="articleSection">
-                <p>This article provides an in-depth look into the definition and scope of finance. <a href="#" target="_blank">Read more</a></p>
-            </div>
-        </div>
-
-        <div class="dropdown-section" onclick="toggleDropdown('quizSection')">
-            <div class="dropdown-title">Assessment 1: Quiz</div>
-            <div class="dropdown-content" id="quizSection">
-                <button class="btn btn-primary" onclick="openQuizModal()">Take the Quiz</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Quiz Modal -->
-    <div class="modal fade" id="quizModal" tabindex="-1" aria-labelledby="quizModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content" style="background-color: var(--form-background-color); color: var(--text-color); padding: 20px;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="quizModalLabel">Quiz</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+        {% elif course['type'] == 'article' %}
+            <div class="dropdown-section" onclick="toggleDropdown('articleSection')">
+                <div class="dropdown-title">Article Module</div>
+                <div class="dropdown-content" id="articleSection">
+                    <p>{{ course['description'] }} <a href="{{ course['link'] }}" target="_blank">Read more</a></p>
                 </div>
-                <div class="modal-body">
-                    <form id="quizForm">
-                        <div class="mb-4">
-                            <label for="question" class="form-label">Sample Quiz Question</label>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="quizOption" id="option1" value="option1">
-                                <label class="form-check-label" for="option1">
-                                    Option 1
-                                </label>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="quizOption" id="option2" value="option2">
-                                <label class="form-check-label" for="option2">
-                                    Option 2
-                                </label>
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="quizOption" id="option3" value="option3">
-                                <label class="form-check-label" for="option3">
-                                    Option 3
-                                </label>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="submitQuizButton" style="background-color: var(--primary-color); border-color: var(--primary-color);">Submit</button>
+            </div>
+        {% endif %}
+d-color: var(--primary-color); border-color: var(--primary-color);">Submit</button>
                     </form>
                 </div>
             </div>

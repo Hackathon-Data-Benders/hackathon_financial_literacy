@@ -16,7 +16,6 @@ dist/
 *.c
 *.cpp
 *.h
-*.html
 
 # cffi-generated files
 *.c

@@ -19,7 +19,8 @@
         }
 
         .courses-container {
-            width: 70%;
+            flex: 1;
+            margin-right: 20px;
         }
 
         .profile-card {
@@ -30,6 +31,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
             color: #ffffff;
+            position: sticky;
+            top: 50px;
         }
 
         .profile-card img {
@@ -75,12 +78,34 @@
         .btn-primary:hover {
             background-color: #732d91;
         }
+        
+        .card {
+            background-color: #222831; /* Use the same color as the personalized section card */
+            border: none;
+            color: #ffffff;
+        }
+        
+        .card-img-top {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .card-body {
+            padding: 15px;
+        }
+        
+        .row > .col-md-3 {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     {% include 'navbar.html' %}
-
+    
     <!-- Profile Page Content -->
     <div class="container profile-container">
         <!-- Left: Courses Section -->
@@ -137,15 +162,14 @@
                 {% endif %}
             </div>
         </div>
-    </div>
     
 
         <!-- Right: Profile Card -->
         <div class="profile-card">
             <img src="/static/src/avatar.png" alt="User Profile">
             <h2>{{username}}</h2>
-            <p>Courses Enrolled in: 0</p>
-            <p>Courses Completed: 0</p>
+            <p>Courses Enrolled in: {{ data.enrolled_courses|length }}</p>
+            <p>Courses Completed: {{ data.completed_courses|length }}</p>
             <p>Member Since August 2024</p>
         </div>
     </div>
