@@ -85,20 +85,60 @@
     <div class="container profile-container">
         <!-- Left: Courses Section -->
         <div class="courses-container">
+            <!-- Enrolled Courses -->
             <div class="courses-section">
                 <h2>Enrolled Courses</h2>
-                <div class="empty-course">
-                    <p>No enrolled courses</p>
-                </div>
+                {% if data.enrolled_courses %}
+                    <div class="row">
+                        {% for course in data.enrolled_courses %}
+                            <div class="col-md-3 mb-4">
+                                <div class="card">
+                                    <img src="/path/to/enrolled/image.svg" class="card-img-top" alt="{{ course.title }}">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title">{{ course.title }}</h6>
+                                        <p class="card-text">{{ course.description }}</p>
+                                        <p class="card-text"><strong>Type:</strong> {{ course.type }}</p>
+                                        <a href="#" class="btn btn-primary btn-sm" target="_blank">Continue</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-course">
+                        <p>No enrolled courses</p>
+                    </div>
+                {% endif %}
             </div>
-
+    
+            <!-- Completed Courses -->
             <div class="courses-section mt-4">
                 <h2>Completed Courses</h2>
-                <div class="empty-course">
-                    <p>No completed courses</p>
-                </div>
+                {% if data.completed_courses %}
+                    <div class="row">
+                        {% for course in data.completed_courses %}
+                            <div class="col-md-3 mb-4">
+                                <div class="card">
+                                    <img src="/path/to/completed/image.svg" class="card-img-top" alt="{{ course.title }}">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title">{{ course.title }}</h6>
+                                        <p class="card-text">{{ course.description }}</p>
+                                        <p class="card-text"><strong>Type:</strong> {{ course.type }}</p>
+                                        <a href="#" class="btn btn-success btn-sm" target="_blank">View Certificate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-course">
+                        <p>No completed courses</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
+    </div>
+    
 
         <!-- Right: Profile Card -->
         <div class="profile-card">

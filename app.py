@@ -22,6 +22,7 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    global user
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
@@ -38,9 +39,25 @@ def register():
             user = auth.sign_in_with_email_and_password(email, password)
             print(user)
             session['user'] = user['idToken'] 
+            user_data = {
+                "username": username,
+                "gender": "",
+                "age": -1,
+                "enrolled_courses": [],
+                "courses_completed": [],
+                "recommended_courses": [],
+                "available_courses": content.courses,
+                "coins": 0
+            }
+
+            user["email"] = user["email"].replace("@", "I").replace(".","I")
+
+            db.child("users").child(user['email']).set(user_data)
+
             return redirect(url_for('personalized_test'))
 
         except Exception as e:
+            print(e)
             flash(f'Error: {e}')
 
     return render_template('register.html')
@@ -52,11 +69,17 @@ def personalized_test():
 
 @app.route('/learn', methods=['GET', 'POST'])
 def learn():
-    return render_template('learn.html', logged_in='user' in session)
+    global user
+    user_id = user['email']
+    user_data = db.child("users").child(user_id).get().val()
+    return render_template('learn.html',data=user_data, logged_in='user' in session)
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    return render_template('profile.html',username='%.9s' % user["email"].split("@")[0], logged_in='user' in session)
+    global user
+    user_id = user['email']
+    user_data = db.child("users").child(user_id).get().val()
+    return render_template('profile.html',data=user_data,username='%.9s' % user["email"].split("@")[0], logged_in='user' in session)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -72,6 +95,7 @@ def login():
             session['user'] = user['idToken']  # Save user token in session
             # print("Session set:", session.get('user'))
             # print("Huhhhh")
+            user["email"] = user["email"].replace("@", "I").replace(".","I")
             flash('Login successful!')
             return redirect(url_for('index'))
         except Exception as e:
@@ -100,7 +124,7 @@ def get_questions():
 @app.route('/submit-answers', methods=['GET', 'POST'])
 def submit_answers():
     request_data = request.get_json()
-    user_id = 'some_user_id'  # Placeholder for user identification logic
+    user_id = user['email']  # Placeholder for user identification logic
     answers = request_data['answers'].split('%')[0].split("\n")
     formatted_responses = ""
     index = 0
@@ -130,7 +154,69 @@ def submit_answers():
     recommendations = ai_process.get_course_recommendations(formatted_responses, courses)
     print(recommendations)
 
+    courses_to_move = []
+    available_courses = db.child('users').child(user_id).get().val().get("available_courses", {})
+    print(">>>>>>>>>>> ",type(available_courses), len(available_courses), available_courses)
+    
+    after_removal = []
+    del_indices = set()
+
+    for i in range(len(available_courses)):
+        if available_courses[i]["title"] in recommendations:
+            courses_to_move.append(available_courses[i])
+            del_indices.add(i)
+
+    for i in range(len(available_courses)):
+        if i not in del_indices:
+            after_removal.append(available_courses[i])
+    db.child('users').child(user_id).update({
+        'available_courses': after_removal,
+        'recommended_courses': courses_to_move
+    })
+
+
     return jsonify({'message': 'Answers received successfully!'})
 
+@app.route('/enroll/<course_title>', methods=['POST'])
+def enroll(course_title):
+    user_id = user['email'] # Get the user ID from the session
+    if not user_id:
+        flash('You must be logged in to enroll in courses.')
+        return redirect(url_for('login'))
+
+    # Retrieve the user's data
+    user_data = db.child('users').child(user_id).get().val()
+    available_courses = user_data.get("available_courses", {})
+    recommended_courses = user_data.get('recommended_courses', {})
+    enrolled_courses = user_data.get('enrolled_courses', [])
+    print(">>>>>>>>>>> ",type(available_courses), len(available_courses), available_courses)
+    # print(available_courses)
+    for i in range(len(available_courses)):
+        if available_courses[i]["title"]==course_title:
+            course = available_courses[i]
+            del available_courses[i]
+            
+            db.child('users').child(user_id).update({
+                'available_courses': available_courses,
+                'enrolled_courses': enrolled_courses + [course]
+            })
+
+            flash(f'You have successfully enrolled in {course_title}.')
+            break
+    for i in range(len(recommended_courses)):
+        if recommended_courses[i]["title"]==course_title:
+            course = recommended_courses[i]
+            del recommended_courses[i]
+            
+            db.child('users').child(user_id).update({
+                'available_courses': recommended_courses,
+                'enrolled_courses': enrolled_courses + [course]
+            })
+
+            flash(f'You have successfully enrolled in {course_title}.')
+            break
+
+    return redirect(url_for('learn'))
+    
 if __name__ == '__main__':
     app.run(debug=True)

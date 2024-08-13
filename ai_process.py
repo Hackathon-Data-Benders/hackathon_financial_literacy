@@ -1,11 +1,13 @@
 from huggingface_hub import InferenceClient
 from api_keys import ai_key
 
-def get_course_recommendations(QA_res, available_courses):
-    client = InferenceClient(
+client = InferenceClient(
         "meta-llama/Meta-Llama-3-8B-Instruct",
         token=ai_key,
     )
+
+def get_course_recommendations(QA_res, available_courses):
+    global client
 
     recommended_courses = ""
 
@@ -23,5 +25,16 @@ def get_course_recommendations(QA_res, available_courses):
     print(eval(recommended_courses))
 
     return eval(recommended_courses)
+
+def generate_description(course_name):
+    global client
+    for message in client.chat_completion(
+            messages=[{"role": "user", "content": f"""Generate a description for a video whose title is {course_name}"""}],
+            max_tokens=500,
+            stream=True,
+    ):
+        description += (message.choices[0].delta.content)
+
+    return description
 
 # print(output)

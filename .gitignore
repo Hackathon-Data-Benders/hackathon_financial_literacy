@@ -1,1 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+*.pyd
+*.dll
+
+# CPython build directories
+build/
+dist/
+
+# Cython-generated files
+*.c
+*.cpp
+*.h
+*.html
+
+# cffi-generated files
+*.c
+*.so
+
 api_keys.py
