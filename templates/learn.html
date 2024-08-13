@@ -75,7 +75,8 @@
                 {% for course in data.enrolled_courses %}
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="/path/to/your/image1.svg" class="card-img-top" alt="{{ course.title }}">
+                            {% set random_num = range(1, 8) | random %}
+                            <img src="{{ url_for('static', filename='src/finance' ~ random_num ~ '.svg') }}" class="card-img-top" alt="{{ course.title }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ course.title }}</h5>
                                 <p class="card-text">{{ course.description }}</p>
@@ -95,7 +96,8 @@
                 {% for course in data.recommended_courses %}
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="/path/to/your/image2.svg" class="card-img-top" alt="{{ course.title }}">
+                            {% set random_num = range(1, 8) | random %}
+                            <img src="{{ url_for('static', filename='src/finance' ~ random_num ~ '.svg') }}" class="card-img-top" alt="{{ course.title }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ course.title }}</h5>
                                 <p class="card-text">{{ course.description }}</p>
@@ -117,7 +119,8 @@
                 {% for course in data.available_courses %}
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <img src="/path/to/your/image3.svg" class="card-img-top" alt="{{ course.title }}">
+                            {% set random_num = range(1, 8) | random %}
+                            <img src="{{ url_for('static', filename='src/finance' ~ random_num ~ '.svg') }}" class="card-img-top" alt="{{ course.title }}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ course.title }}</h5>
                                 <p class="card-text">{{ course.description }}</p>
@@ -137,41 +140,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-       document.getElementById('send-button').addEventListener('click', function() {
-    const userInput = document.getElementById('user-input').value;
-    if (userInput.trim() === '') return;
-
-    // Append the user's input to the chat history
-    const userMessage = `<div class="text-end"><strong>You:</strong> ${userInput}</div>`;
-    document.getElementById('chat-history').innerHTML += userMessage;
-
-    const chatHistory = document.getElementById('chat-history');
-    chatHistory.scrollTop = chatHistory.scrollHeight;
-
-    document.getElementById('user-input').value = '';
-
-    // Send the user input to the backend
-    fetch('/chat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ question: userInput })
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Append the AI's overview and follow-up question
-        const botMessage = `<div><strong>Pluotos:</strong> ${data.overview}</div>
-                            <div><strong>Pluotos:</strong> ${data.follow_up}</div>
-                            <button id="create-course-btn" class="btn btn-primary mt-2">Yes, create a course</button>`;
-        document.getElementById('chat-history').innerHTML += botMessage;
-
-        // Scroll to the bottom
-        chatHistory.scrollTop = chatHistory.scrollHeight;
-
-        // Handle course creation
-        document.getElementById('create-course-btn').addEventListener('click', function() {
-            fetch('/create-course', {
+        document.getElementById('send-button').addEventListener('click', function() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput.trim() === '') return;
+    
+            // Append the user's input to the chat history
+            const userMessage = `<div class="text-end"><strong>You:</strong> ${userInput}</div>`;
+            document.getElementById('chat-history').innerHTML += userMessage;
+    
+            const chatHistory = document.getElementById('chat-history');
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+    
+            document.getElementById('user-input').value = '';
+    
+            // Send the user input to the backend
+            fetch('/chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -179,28 +162,67 @@
                 body: JSON.stringify({ question: userInput })
             })
             .then(response => response.json())
-            .then(newCourse => {
-                // Generate the dynamic URL for the new course
-                const courseUrl = `/course/${encodeURIComponent(newCourse.title)}`;
-
-                // Update the enrolled courses section with the new course
-                const newCourseHTML = `<div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="/path/to/your/image1.svg" class="card-img-top" alt="${newCourse.title}">
-                        <div class="card-body">
-                            <h5 class="card-title">${newCourse.title}</h5>
-                            <p class="card-text">${newCourse.description}</p>
-                            <p class="card-text"><strong>Type:</strong> ${newCourse.type}</p>
-                            <a href="${courseUrl}" class="btn btn-primary">Continue</a>
-                        </div>
-                    </div>
-                </div>`;
-                document.querySelector('.learn-section .row').innerHTML += newCourseHTML;
+            .then(data => {
+                let botMessage = '';  // Define botMessage outside the conditionals
+    
+                // Append the AI's response
+                if (data.overview === "") {
+                    botMessage = `<div><strong>Pluotos:</strong> ${data.follow_up}</div>`;
+                } else if (data.follow_up === "") {
+                    botMessage = `<div><strong>Pluotos:</strong> ${data.overview}</div>`;
+                } else {
+                    botMessage = `<div><strong>Pluotos:</strong> ${data.overview}</div>
+                                  <div><strong>Pluotos:</strong> ${data.follow_up}</div>`;
+                }
+    
+                document.getElementById('chat-history').innerHTML += botMessage;
+    
+                // If the bot prompts for course creation, add the follow-up and button
+                if (data.follow_up.includes("Would you like to create a course")) {
+                    const followUpMessage = `<button id="create-course-btn" class="btn btn-primary mt-2">Yes, create a course</button>`;
+                    document.getElementById('chat-history').innerHTML += followUpMessage;
+    
+                    // Attach the event listener to the newly created button
+                    document.getElementById('create-course-btn').addEventListener('click', function() {
+                        fetch('/create-course', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ topic: userInput })
+                        })
+                        .then(response => response.json())
+                        .then(newCourse => {
+                            // Generate the dynamic URL for the new course
+                            const courseUrl = `/course/${encodeURIComponent(newCourse.title)}`;
+    
+                            // Update the enrolled courses section with the new course
+                            const newCourseHTML = `
+                                <div class="col-md-4">
+                                    <div class="card mb-4">
+                                        <img src="/path/to/your/image1.svg" class="card-img-top" alt="${newCourse.title}">
+                                        <div class="card-body">
+                                            <h5 class="card-title">${newCourse.title}</h5>
+                                            <p class="card-text">${newCourse.description}</p>
+                                            <p class="card-text"><strong>Progress:</strong> ${newCourse.progress}%</p>
+                                            <a href="${courseUrl}" class="btn btn-primary">Continue</a>
+                                        </div>
+                                    </div>
+                                </div>`;
+                            document.querySelector('.learn-section .row').innerHTML += newCourseHTML;
+    
+                            alert('Course created successfully!');
+    
+                            // Optionally, scroll the user to the new course section
+                            document.querySelector('.learn-section').scrollIntoView({ behavior: 'smooth' });
+                        });
+                    });
+                }
+    
+                // Scroll to the bottom of the chat history
+                chatHistory.scrollTop = chatHistory.scrollHeight;
             });
         });
-    });
-});
-
     </script>
     
 </body>

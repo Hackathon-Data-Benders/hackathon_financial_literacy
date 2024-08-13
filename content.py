@@ -52,90 +52,89 @@ questions = {
 courses = [
     {
         "title": "Budgeting Basics",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=M7ucIl9MGs0&pp=ygUQYnVkZ2V0aW5nIGJhc2ljcw%3D%3D",
+        "video": "https://www.youtube.com/watch?v=M7ucIl9MGs0",
+        "article": "https://www.unfcu.org/financial-wellness/50-30-20-rule/#:~:text=Those%20will%20become%20part%20of,to%20realize%20your%20future%20goals.",
         "description": "Learn the fundamentals of budgeting, including how to allocate your income effectively and save for your financial goals."
     },
     {
         "title": "Saving Strategies",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=U16k8cWFEC8&t=1138s&pp=ygUQc2F2aW5nIHN0cmF0ZWd5IA%3D%3D",
+        "video": "https://www.youtube.com/watch?v=U16k8cWFEC8",
+        "article": "https://www.iciciprulife.com/investments/how-to-save-money.html",
         "description": "Discover effective saving strategies to maximize your savings and achieve financial security."
     },
     {
         "title": "Understanding Credit Scores",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=3-PTiJOGb5s&t=437s&pp=ygUbVW5kZXJzdGFuZGluZyBDcmVkaXQgU2NvcmVz",
+        "video": "https://www.youtube.com/watch?v=3-PTiJOGb5s",
+        "article": "https://www.experian.com/blogs/ask-experian/credit-education/score-basics/understanding-credit-scores/",
         "description": "Gain a clear understanding of credit scores, how they are calculated, and their impact on your financial health."
     },
     {
         "title": "Introduction to Investing",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=lNdOtlpmH5U&pp=ygUZSW50cm9kdWN0aW9uIHRvIEludmVzdGluZw%3D%3D",
+        "video": "https://www.youtube.com/watch?v=lNdOtlpmH5U",
+        "article": "https://www.investor.gov/introduction-investing",
         "description": "Get introduced to the basics of investing, including different investment types and strategies for beginners."
     },
     {
         "title": "Debt Management",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=B5nDFRFSHkc&pp=ygUPZGVidCBtYW5hZ2VtZW50",
+        "video": "https://www.youtube.com/watch?v=B5nDFRFSHkc",
+        "article": "https://www.investopedia.com/articles/pf/12/good-debt-bad-debt.asp",
         "description": "Learn how to manage debt effectively, including tips for paying off loans and avoiding common debt traps."
     },
     {
         "title": "Retirement Planning",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=Fr7p97UGRwI&pp=ygUTUmV0aXJlbWVudCBQbGFubmluZw%3D%3D",
+        "video": "https://www.youtube.com/watch?v=Fr7p97UGRwI",
+        "article": "https://www.hdfclife.com/retirement-and-pension-plans/retirement-planning#:~:text=Retirement%20planning%20involves%20identifying%20your,maintain%20your%20standard%20of%20living.",
         "description": "Explore the essentials of retirement planning and how to ensure financial stability in your later years."
     },
     {
         "title": "Understanding Taxes",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=MQpbxF_RngI&pp=ygUTVW5kZXJzdGFuZGluZyBUYXhlcw%3D%3D",
+        "video": "https://www.youtube.com/watch?v=MQpbxF_RngI",
+        "article": "https://www.investindia.gov.in/taxation",
         "description": "Get a comprehensive overview of how taxes work, including tips on filing and tax-saving strategies."
     },
     {
         "title": "Managing Student Loans",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=2t3oyMcE96g&pp=ygUcTWFuYWdpbmcgU3R1ZGVudCBMb2FucyBpbmRpYQ%3D%3D",
+        "video": "https://www.youtube.com/watch?v=2t3oyMcE96g",
+        "article": "https://www.bankbazaar.com/education-loan.html",
         "description": "Learn strategies for managing student loans effectively and minimizing debt after graduation."
     },
     {
         "title": "Stock Market Essentials",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=iWBjHPFrwrM&t=800s&pp=ygUdU3RvY2sgTWFya2V0IEVzc2VudGlhbHMgaW5kaWE%3D",
+        "video": "https://www.youtube.com/watch?v=iWBjHPFrwrM",
+        "article": "https://www.indiainfoline.com/knowledge-center/share-market/share-market-investment-guide-for-beginners",
         "description": "Get to know the essentials of the stock market, including how it works and how to start investing."
     },
     {
         "title": "Personal Financial Planning",
-        "type": "video",
-        "link": "https://www.youtube.com/playlist?list=PL8uhW8cclMiOSfw_Kzi6YpLx1PhL8GIS9",
+        "video": "https://www.youtube.com/playlist?list=PL8uhW8cclMiOSfw_Kzi6YpLx1PhL8GIS9",
+        "article": "https://www.principal.com/individuals/build-your-knowledge/step-step-guide-build-personal-financial-plan",
         "description": "Learn how to create a comprehensive financial plan that covers all aspects of your personal finances."
     },
     {
         "title": "Mutual Funds vs. ETFs",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=wcBLdJ_jN2g&pp=ygUVTXV0dWFsIEZ1bmRzIHZzLiBFVEZz",
+        "video": "https://www.youtube.com/watch?v=wcBLdJ_jN2g",
+        "article": "https://www.bajajfinserv.in/investments/mutual-funds-vs-etfs#:~:text=ETFs%20are%20passively%20managed%2C%20mirroring,on%20analysis%20and%20market%20outlook.&text=ETFs%20allow%20investors%20to%20start,require%20a%20higher%20minimum%20investment.",
         "description": "Understand the differences between mutual funds and ETFs, and which might be a better investment for you."
     },
     {
         "title": "Understanding Loans and Mortgages",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=HOOdOdDNEYE&pp=ygUnVW5kZXJzdGFuZGluZyBMb2FucyBhbmQgTW9ydGdhZ2VzIGluZGlh",
+        "video": "https://www.youtube.com/watch?v=HOOdOdDNEYE",
+        "article": "https://www.investopedia.com/terms/m/mortgage.asp",
         "description": "Learn the basics of loans and mortgages, including how to qualify, apply, and manage them effectively."
     },
     {
         "title": "Cryptocurrency Basics",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=PdduvP_KlcI&pp=ygUbQ3J5cHRvY3VycmVuY3kgQmFzaWNzIGluZGlh",
+        "video": "https://www.youtube.com/watch?v=PdduvP_KlcI",
+        "article": "https://www.oswego.edu/cts/basics-about-cryptocurrency",
         "description": "Get an introduction to cryptocurrency, how it works, and what you need to know before investing."
     },
     {
         "title": "Understanding Inflation",
-        "type": "video",
-        "link": "https://www.youtube.com/watch?v=NLtnm_bRzPw&t=137s&pp=ygUXVW5kZXJzdGFuZGluZyBJbmZsYXRpb24%3D",
+        "video": "https://www.youtube.com/watch?v=NLtnm_bRzPw",
+        "article": "https://www.imf.org/en/Publications/fandd/issues/Series/Back-to-Basics/Inflation#:~:text=Inflation%20is%20the%20rate%20of,of%20living%20in%20a%20country.",
         "description": "Understand what inflation is, how it affects the economy, and how you can protect your finances from it."
     }
 ]
-
 
 course_titles = [
     "Budgeting Basics",
