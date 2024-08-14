@@ -184,23 +184,29 @@
     
                     // Attach the event listener to the newly created button
                     document.getElementById('create-course-btn').addEventListener('click', function() {
+                        // Pass the course title as the question
+                        const courseTitle = userInput;
+    
                         fetch('/create-course', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify({ topic: userInput })
+                            body: JSON.stringify({ question: courseTitle })
                         })
                         .then(response => response.json())
                         .then(newCourse => {
                             // Generate the dynamic URL for the new course
                             const courseUrl = `/course/${encodeURIComponent(newCourse.title)}`;
     
+                            // Generate a random number between 1 and 7 for the SVG image
+                            const randomNum = Math.floor(Math.random() * 7) + 1;
+    
                             // Update the enrolled courses section with the new course
                             const newCourseHTML = `
                                 <div class="col-md-4">
                                     <div class="card mb-4">
-                                        <img src="/path/to/your/image1.svg" class="card-img-top" alt="${newCourse.title}">
+                                        <img src="/static/src/finance${randomNum}.svg" class="card-img-top" alt="${newCourse.title}">
                                         <div class="card-body">
                                             <h5 class="card-title">${newCourse.title}</h5>
                                             <p class="card-text">${newCourse.description}</p>

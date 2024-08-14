@@ -88,6 +88,52 @@
             font-size: 1rem;
             line-height: 1.5;
         }
+
+        .paragraph-section {
+            background-color: #2a2a2a;
+            color: #fff;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .paragraph-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .paragraph-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .quiz-section {
+            background-color: #222;
+            color: #fff;
+            margin: 20px 0;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .quiz-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+        }
+
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quiz-option {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -128,6 +174,43 @@
                 </div>
             </div>
         {% endif %}
+        {% if course_paragraph %}
+            <div class="dropdown-section" onclick="toggleDropdown('paraSection')">
+                <div class="dropdown-title">Start Reading</div>
+                <div class="dropdown-content" id="paraSection">
+                    <p>{{ course_paragraph }}</p>
+                </div>
+            </div>
+        {% endif %}
+        {% if quiz %}
+            <div class="quiz-section">
+                <div class="quiz-title">Assessment: Quiz</div>
+                <form id="quizForm">
+                    {% for question in quiz %}
+                        <div class="mb-4">
+                            <!-- Display the question -->
+                            <div class="quiz-question">{{ loop.index }}. {{ question['question'] }}</div>
+                            
+                            <!-- Loop through options for each question -->
+                            {% for option in question['options'] %}
+                                <div class="form-check quiz-option">
+                                    <!-- Radio button input with a unique id -->
+                                    <input class="form-check-input" type="radio" name="question{{ loop.index }}" 
+                                        id="question{{ loop.index }}option{{ loop.index0 }}" 
+                                        value="{{ option }}">
+                                    <!-- Label associated with the radio button -->
+                                    <label class="form-check-label" 
+                                        for="question{{ loop.index }}option{{ loop.index0 }}">
+                                        {{ option }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <button type="button" class="btn btn-primary" id="submitQuizButton">Submit</button>
+                </form>
+            </div>
+        {% endif %}
     </div>
 
     <script>
@@ -135,6 +218,43 @@
             const content = document.getElementById(sectionId);
             content.classList.toggle('show');
         }
+
+        document.getElementById('submitQuizButton').addEventListener('click', function() {
+            var selectedOptions = {};
+            var quizData = [];  // This will store the quiz structure
+            
+            document.querySelectorAll('.quiz-section ').forEach((questionDiv, index) => {
+                let questionText = questionDiv.querySelector('.quiz-question').textContent.trim();
+                let selectedOption = questionDiv.querySelector('[name^="question"]:checked')?.value || null;
+                selectedOptions[questionText] = selectedOption;
+
+                // Prepare the quiz data with questions and options
+                let options = Array.from(questionDiv.querySelectorAll('.quiz-option .form-check-input')).map(option => option.value);
+                quizData.push({
+                    'question': questionText,
+                    'options': options
+                });
+            });
+
+            // Send the selected options and quiz data to the server for grading
+            fetch('/grade-quiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 
+                    answers: selectedOptions,
+                    quiz: quizData  // Sending the quiz data along with the answers
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(`You scored ${result.score}/${result.total_questions}. Your grade is ${result.grade}%.`);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
 
         
 

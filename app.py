@@ -245,7 +245,10 @@ def course_page(course_title):
         flash('Course not found')
         return redirect(url_for('learn'))
     print(selected_course)
-    return render_template('course.html',logged_in='user' in session, course=selected_course)
+
+    generated_paragraph = ai_process.generate_course_paragraph(course['title'])
+    generated_quiz = ai_process.generate_course_quiz(generated_paragraph)
+    return render_template('course.html', course=selected_course, quiz = generated_quiz, course_paragraph=generated_paragraph)
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -298,6 +301,21 @@ def create_course():
 
     return jsonify(new_course)
 
+@app.route('/grade-quiz', methods=['POST'])
+def grade_quiz():
+    data = request.json
+    user_answers = data.get('answers')
+    quiz = data.get('quiz')
+    
+    # Assuming you pass the entire quiz structure to compare the answers
+
+    grade, score, total_questions = ai_process.grade_quiz(quiz, user_answers)
+
+    return jsonify({
+        'grade': grade,
+        'score': score,
+        'total_questions': total_questions
+    })
 
 # @app.route('/course/<course_title>', methods=['GET'])
 # def course(course_title):

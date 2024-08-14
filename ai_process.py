@@ -55,6 +55,53 @@ def generate_course_overview(question):
         overview += message.choices[0].delta.content
     return overview
 
+def generate_course_paragraph(title):
+    prompt = f"Write an Extremely detailed paragraph on {title}. and make it so that It is very understandable. and very well formatted."
+    paragraph = ""
+    for message in client.chat_completion(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=5000,
+        stream=True,
+    ):
+        paragraph += message.choices[0].delta.content
+    return paragraph
+
+def generate_course_quiz(paragraph):
+    prompt = paragraph + """\nFrom the Above Paragraph, generate a quiz of this format[THE RESPONSE SHOULD BE IN THIS FORMAT ONLY]:
+    [
+        {
+            'question': question_statement,
+            'options': [
+                option1,
+                option2,
+                option3,
+                option4
+            ]
+        },
+        {
+            'question': question_statement,
+            'options': [
+                option1,
+                option2,
+                option3,
+                option4
+            ]
+        },.....
+    ] Each question should contain a single correct answer."""
+    quiz = ""
+    for message in client.chat_completion(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=1750,
+        stream=True,
+    ):
+        quiz += message.choices[0].delta.content
+    print(quiz)
+
+    quiz = quiz[len("Here is the quiz based on the text:"):-len("Let me know if you need any changes!")]
+    try:
+        return eval(quiz)
+    except:
+        return None
 
 def fetch_relevant_video(question):
     # Simulate fetching a relevant video for the course
@@ -68,15 +115,40 @@ def fetch_relevant_video(question):
         video_link += message.choices[0].delta.content
     return video_link
 
+def grade_quiz(quiz, user_answers):
+    prompt = str(quiz) + "\n" + str(user_answers) + """\nHere are the questions, followed by their answers. Return the count of how many questions are correct.(responses should be of the format):\n
+    [{
+    'score': no_of_correct_answers:int,
+    'total_questions': total_questions:int
+    }]"""
+    response = ""
+    for message in client.chat_completion(
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=100,
+        stream=True,
+    ):
+        response += message.choices[0].delta.content
+    response = eval(response)
+    score = response[0]['core']
+    total_questions = response[0]['total_questions']
+    grade = (score / total_questions) * 100
+    return grade, score,total_questions
 
 def create_custom_course(question, user_id, db):
+    # Check if the question is None
+    if question is None:
+        raise ValueError("Question cannot be None")
+    
+    # Generate the course title
+    course_title = question.title()  # Use the question as the title
+
     # Generate the overview
     overview = generate_course_overview(question)
+
     # Fetch a relevant video
     video_link = fetch_relevant_video(question)
 
     # Create a course dictionary
-    course_title = question.title()  # Use the question as the title
     new_course = {
         "title": course_title,
         "description": overview,
