@@ -22,3 +22,5 @@ dist/
 *.so
 
 api_keys.py
+Pipfile
+Pipfile.lock
