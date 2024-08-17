@@ -1,0 +1,4 @@
+Flask==3.0.3
+huggingface_hub==0.23.0
+Markdown==3.7
+Pyrebase4==4.7.1
