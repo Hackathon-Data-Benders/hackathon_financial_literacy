@@ -4,6 +4,7 @@ import secrets
 from config import firebase_config as config
 import content
 import ai_process
+import markdown
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -168,8 +169,10 @@ def submit_answers():
     print(recommendations)
 
     courses_to_move = []
-    available_courses = db.child('users').child(user_id).get().val().get("available_courses", {})
-    print(">>>>>>>>>>> ", type(available_courses),len(available_courses), available_courses)
+    available_courses = db.child('users').child(
+        user_id).get().val().get("available_courses", {})
+    print(">>>>>>>>>>> ", type(available_courses),
+          len(available_courses), available_courses)
 
     after_removal = []
     del_indices = set()
@@ -230,7 +233,7 @@ def enroll(course_title):
     return redirect(url_for('learn'))
 
 
-@app.route('/course/<course_title>', methods=['GET','POST'])
+@app.route('/course/<course_title>', methods=['GET', 'POST'])
 def course_page(course_title):
     global user
     user_id = user['email']
@@ -248,7 +251,15 @@ def course_page(course_title):
 
     generated_paragraph = ai_process.generate_course_paragraph(course['title'])
     generated_quiz = ai_process.generate_course_quiz(generated_paragraph)
-    return render_template('course.html', course=selected_course, quiz = generated_quiz, course_paragraph=generated_paragraph)
+    generated_paragraph_html = markdown.markdown(generated_paragraph)
+    if generated_quiz:
+        generated_quiz_html = [markdown.markdown(
+            quiz['question']) for quiz in generated_quiz]
+    else:
+        generated_quiz_html = None
+
+    return render_template('course.html', course=selected_course, quiz=generated_quiz_html, course_paragraph=generated_paragraph_html)
+
 
 @app.route('/chat', methods=['POST'])
 def chat():
@@ -284,6 +295,7 @@ def chat():
 
     return jsonify(response)
 
+
 @app.route('/clear_history', methods=['POST', 'GET'])
 def clear_history():
     session.pop('conversation_history', None)
@@ -301,12 +313,13 @@ def create_course():
 
     return jsonify(new_course)
 
+
 @app.route('/grade-quiz', methods=['POST'])
 def grade_quiz():
     data = request.json
     user_answers = data.get('answers')
     quiz = data.get('quiz')
-    
+
     # Assuming you pass the entire quiz structure to compare the answers
 
     grade, score, total_questions = ai_process.grade_quiz(quiz, user_answers)
@@ -345,6 +358,7 @@ def grade_quiz():
 
 #     print(f"Course found: {course_data}")  # Debugging print
 #     return render_template('course.html',, course=course_data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

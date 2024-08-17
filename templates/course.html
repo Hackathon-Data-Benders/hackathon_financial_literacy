@@ -79,12 +79,12 @@
         }
 
         .video-embed iframe {
-            max-width: 60%;
+            max-width: 100%;
             height: 315px;
         }
 
         .video-description {
-            max-width: 35%;
+            margin-top: 10px;
             font-size: 1rem;
             line-height: 1.5;
         }
@@ -150,23 +150,23 @@
     </div>
 
     <div class="container mt-5">
-        {% if course['video']  %}
+        {% if course['link'] %}
             <div class="dropdown-section" onclick="toggleDropdown('videoSection')">
                 <div class="dropdown-title">Video Module</div>
                 <div class="dropdown-content" id="videoSection">
                     <div class="video-embed">
                         <iframe id="player" type="text/html" width="640" height="390"
-                            src="{{ course['video'] | replace('watch?v=', 'embed/') }}?enablejsapi=1&origin=http://example.com"
+                            src="{{ course['link'] | replace('watch?v=', 'embed/') }}?enablejsapi=1&origin=http://example.com"
                             frameborder="0" allowfullscreen></iframe>
-                           
-                        <div class="video-description">
-                            <p>{{ course['description'] }}</p>
-                        </div>
+                    </div>
+                    <div class="video-description">
+                        <p>{{ course['description'] }}</p>
                     </div>
                 </div>
             </div>
         {% endif %}
-        {% if course['article']  %}
+        
+        {% if course['article'] %}
             <div class="dropdown-section" onclick="toggleDropdown('articleSection')">
                 <div class="dropdown-title">Article Module</div>
                 <div class="dropdown-content" id="articleSection">
@@ -174,14 +174,16 @@
                 </div>
             </div>
         {% endif %}
+
         {% if course_paragraph %}
             <div class="dropdown-section" onclick="toggleDropdown('paraSection')">
                 <div class="dropdown-title">Start Reading</div>
                 <div class="dropdown-content" id="paraSection">
-                    <p>{{ course_paragraph }}</p>
+                    <div class="paragraph-content">{{ course_paragraph | safe }}</div>
                 </div>
             </div>
         {% endif %}
+
         {% if quiz %}
             <div class="quiz-section">
                 <div class="quiz-title">Assessment: Quiz</div>
@@ -223,7 +225,7 @@
             var selectedOptions = {};
             var quizData = [];  // This will store the quiz structure
             
-            document.querySelectorAll('.quiz-section ').forEach((questionDiv, index) => {
+            document.querySelectorAll('.quiz-section .mb-4').forEach((questionDiv, index) => {
                 let questionText = questionDiv.querySelector('.quiz-question').textContent.trim();
                 let selectedOption = questionDiv.querySelector('[name^="question"]:checked')?.value || null;
                 selectedOptions[questionText] = selectedOption;
@@ -255,9 +257,6 @@
                 console.error('Error:', error);
             });
         });
-
-        
-
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
