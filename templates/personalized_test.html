@@ -94,9 +94,10 @@
                   .then(data => {
                       console.log(data);
                       // Redirect to the index page after successful submission
-                      window.location.href = "{{ url_for('index', logged_in = True) }}";
+                      window.location.href = "{{ url_for('plan') }}";
                   }).catch(error => {
                       console.error('Error:', error);
+                      print(error)
                   });
             });
         });

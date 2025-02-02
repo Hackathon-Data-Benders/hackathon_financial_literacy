@@ -1,12 +1,11 @@
-from api_keys import db_key
-
 firebase_config = {
-    "apiKey": db_key,
-    'authDomain': "vitc-hackathon.firebaseapp.com",
-    'databaseURL': "https://vitc-hackathon-default-rtdb.asia-southeast1.firebasedatabase.app",
-    'projectId': "vitc-hackathon",
-    'storageBucket': "vitc-hackathon.appspot.com",
-    'messagingSenderId': "101699835554",
-    'appId': "1:101699835554:web:45b404e97ff504610029fb",
-    'measurementId': "G-H8VQGB4S1Y"
+    "apiKey": "",
+    'authDomain': "<project-id>.firebaseapp.com",
+ #   'databaseURL': "https://hackathon-databenders-db.us-central1.firebasedatabase.app",
+    'databaseURL': "https://<project-id>-default-rtdb.firebaseio.com",
+    'projectId': "<project-id>",
+    'storageBucket': "<project-id>.firebasestorage.app",
+    'messagingSenderId': "476142853552",
+    'appId': "1:476142853552:web:899e838334405eb7cc0a75",
+    'measurementId': "G-DWB7TQ839Y"
 }

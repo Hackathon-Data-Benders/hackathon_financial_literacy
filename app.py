@@ -2,23 +2,26 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 import pyrebase
 import secrets
 from config import firebase_config as config
-import content
-import ai_process
+import content,plans
+import ai_process_test as ai_process
 import markdown
+import json,requests
+# import firebase_admin
+# from firebase_admin import credentials,firestore
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
+
 firebase = pyrebase.initialize_app(config)
 
-db = firebase.database()
+# Get the auth and database objects
 auth = firebase.auth()
-# storage = firebase.storage()
-
+db = firebase.database()
 user = None
-questions = content.questions
+questions = plans.questions
 courses = content.courses
-db.child("available_courses").set(courses)
+#db.child("available_courses").set(courses)
 
 
 @app.route('/')
@@ -133,6 +136,28 @@ def logout():
 def get_questions():
     return jsonify(questions)
 
+@app.route('/plan',methods=['GET'])
+def plan():
+    user_id = user['email']
+    if request.method == 'GET':
+        plan_recommendations=db.child('users').child(user_id).child('recommended_plans').get().val()
+        print(f"plan - {plan_recommendations}")
+        return render_template("plan.html",plans=plan_recommendations)
+
+    # if data:
+    #     request_data = json.loads(data)
+    # print(f"inside plan - {request_data}")
+    
+
+@app.route('/learn_plan',methods=['POST'])
+def learn_plan():
+    # request_data_json = request.get_json()
+    request_data_str = request.args.get("plan_title")
+    paragraph=ai_process.generate_plan_paragraph(request_data_str)
+    paragraph_html = markdown.markdown(paragraph)
+    print(f"learn plan for {request_data_str}")
+    return render_template('plan.html', plan_paragraph=paragraph_html)
+
 
 @app.route('/submit-answers', methods=['GET', 'POST'])
 def submit_answers():
@@ -164,34 +189,16 @@ def submit_answers():
         index += 1
 
     print(formatted_responses)
-    recommendations = ai_process.get_course_recommendations(
-        formatted_responses, courses)
-    print(recommendations)
-
-    courses_to_move = []
-    available_courses = db.child('users').child(
-        user_id).get().val().get("available_courses", {})
-    print(">>>>>>>>>>> ", type(available_courses),
-          len(available_courses), available_courses)
-
-    after_removal = []
-    del_indices = set()
-
-    for i in range(len(available_courses)):
-        if available_courses[i]["title"] in recommendations:
-            courses_to_move.append(available_courses[i])
-            del_indices.add(i)
-
-    for i in range(len(available_courses)):
-        if i not in del_indices:
-            after_removal.append(available_courses[i])
-    db.child('users').child(user_id).update({
-        'available_courses': after_removal,
-        'recommended_courses': courses_to_move
-    })
-
+    plan_recommendations = ai_process.get_plan_recommendations(
+        formatted_responses)
+    #return redirect(url_for('plan',data=json.dumps({"title":"123"})))
+    #recommendations_html=[markdown.markdown(plan) for plan in recommendations]
+    # recommendations_html=[markdown.markdown(
+    #         plan['title']) for plan in recommendations]
+    # print(recommendations)
+    db.child('users').child(user_id).child('recommended_plans').set(plan_recommendations)
     return jsonify({'message': 'Answers received successfully!'})
-
+    
 
 @app.route('/enroll/<course_title>', methods=['POST'])
 def enroll(course_title):
@@ -235,7 +242,6 @@ def enroll(course_title):
 
 @app.route('/course/<course_title>', methods=['GET', 'POST'])
 def course_page(course_title):
-    global user
     user_id = user['email']
     user_data = db.child("users").child(user_id).get().val()
 
@@ -252,11 +258,11 @@ def course_page(course_title):
     generated_paragraph = ai_process.generate_course_paragraph(course['title'])
     generated_quiz = ai_process.generate_course_quiz(generated_paragraph)
     generated_paragraph_html = markdown.markdown(generated_paragraph)
-    if generated_quiz:
-        generated_quiz_html = [markdown.markdown(
-            quiz['question']) for quiz in generated_quiz]
-    else:
-        generated_quiz_html = None
+    # if generated_quiz:
+    #     generated_quiz_html = [markdown.markdown(
+    #         quiz['question']) for quiz in generated_quiz]
+    # else:
+    generated_quiz_html = None
 
     return render_template('course.html', course=selected_course, quiz=generated_quiz_html, course_paragraph=generated_paragraph_html)
 
@@ -314,7 +320,7 @@ def create_course():
     return jsonify(new_course)
 
 
-@app.route('/grade-quiz', methods=['POST'])
+@app.route('/-quiz', methods=['POST'])
 def grade_quiz():
     data = request.json
     user_answers = data.get('answers')
@@ -350,7 +356,7 @@ def grade_quiz():
 #         if course['title'].lower() == course_title.lower():
 #             course_data = course
 #             break
-
+# grade
 #     if not course_data:
 #         print("Course not found!")  # Debugging print
 #         flash("Course not found!")
