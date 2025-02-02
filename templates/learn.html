@@ -12,7 +12,7 @@
             border-radius: 10px;
             padding: 20px;
             margin: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(240 155 123);
             height: 100%; /* Ensure all cards have the same height */
             display: flex;
             flex-direction: column;
@@ -47,6 +47,102 @@
         .card .btn-primary:hover {
             background-color: var(--primary-hover-color);
         }
+
+        .col-md-4 {
+            padding: 15px;
+        }
+
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .chat-section {
+            background-color: #222831;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+
+        #chat-history {
+            height: 200px;
+            overflow-y: scroll;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        #chat-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #user-input {
+            border-radius: 20px;
+            border: none;
+            background-color: #292b2c;
+            color: white;
+            flex-grow: 1;
+            margin-right: 10px;
+            padding: 10px;
+        }
+
+        #send-button {
+            background-color: rgba(132, 175, 156, 1);
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #send-button img {
+            width: 24px;
+            height: 24px;
+            filter: brightness(0) invert(1); /* Make the image white */
+        }
+
+        #send-button:hover {
+            background-color: #f09b93;
+        }
+
+        .container {
+            margin-top: 50px;
+            max-width: 1000px; /* Increase max-width for a wider container */
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px; /* Add padding for better spacing */
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-top: 20px; /* Reduce margin to decrease space */
+            margin-bottom: 10px;
+        }
+
+        .learn-section {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Ensure full width */
+        }
+
+
 </style>
 
     </style>
@@ -60,10 +156,8 @@
                 <div id="chat-history" style="height: 200px; overflow-y: scroll; color: white;"></div>
             </div>
             <form id="chat-form" class="d-flex mt-2" onsubmit="return false;">
-                <input type="text" id="user-input" class="form-control" placeholder="Ask your doubt" style="border-radius: 20px; border: none; background-color: #292b2c; color: white;">
-                <button type="submit" id="send-button" class="btn" style="background-color: #8e44ad; border-radius: 50%; margin-left: 10px;">
-                    <span style="color: white;">&#x21A9;</span>
-                </button>
+                <input type="text" id="user-input" class="form-control" placeholder="Ask your doubt" style="border-radius: 20px; border: none; background-color: rgb(215 216 218);; color: black;">
+                <button type="submit" id="send-button"><img src="/static/src/send-button.png" alt="Send"></button>
             </form>
     <div class="container mt-5">
         <h1 class="text-center">Courses</h1>
@@ -204,7 +298,7 @@
     
                             // Update the enrolled courses section with the new course
                             const newCourseHTML = `
-                                <div class="col-md-4">
+                                <div class="col-md-4" style="margin-top: 25px">
                                     <div class="card mb-4">
                                         <img src="/static/src/finance${randomNum}.svg" class="card-img-top" alt="${newCourse.title}">
                                         <div class="card-body">
