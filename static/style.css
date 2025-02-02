@@ -1,0 +1,237 @@
+:root {
+    --background-color: #1a1a1a;
+    --primary-color: #8e44ad;
+    --primary-hover-color: #732d91;
+    --form-background-color: #2c2c2c;
+    --form-placeholder-color: #b3b3b3;
+    --text-color: #fff;
+    --navbar-logo-width: 100px;
+    --navbar-logo-height: auto;
+    --color-1: #351f5d;
+    --color-2: #764faf;
+    --color-3: #e3c6ff;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.navbar-brand .logo {
+    width: var(--navbar-logo-width);
+    height: var(--navbar-logo-height);
+}
+
+.navbar-brand {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--text-color);
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+h2 {
+    margin-bottom: 30px;
+}
+
+.form-control {
+    background-color: var(--form-background-color);
+    border: none;
+    color: var(--text-color);
+}
+
+.form-control::placeholder {
+    color: var(--form-placeholder-color);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.hero-section {
+    background: url('/static/src/Background.png') no-repeat center center/cover;
+    height: 100vh;
+    color: var(--text-color);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.journey-section {
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* A slight overlay for readability */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+}
+
+.journey-section h2 {
+    font-size: 3rem;
+    margin-bottom: 40px;
+}
+
+.journey-section .card {
+    background-color: var(--form-background-color);
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.journey-section .card-body {
+    padding: 20px;
+}
+
+.journey-section .btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+}
+
+.journey-section .btn-primary:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.personalized-journey-section {
+    color: var(--text-color);
+    padding: 50px 0;
+}
+
+.personalized-journey-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: rgba(0, 0, 0, 0.7); /* To keep the cards visible against the background */
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h5 {
+    font-size: 1.25rem;
+}
+
+.card p {
+    margin-bottom: 15px;
+}
+
+.card .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.card .btn-primary:hover {
+    background-color: var(--primary-hover-color);
+}
+
+.about-us-section {
+    background: url('/static/src/Background.png') no-repeat center center/cover;
+    padding: 60px 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+}
+
+.stat-percentage {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #8e44ad, #732d91);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-right: 15px;
+}
+
+.stat-item p {
+    font-size: 1rem;
+    color: #ffffff;
+}
+.about-us-full-section {
+    padding: 40px 20px;
+}
+
+.container {
+    max-width: 1140px;
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.mission-vision-content p {
+    font-size: 1rem;
+    color: #ffffff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-us-full-section .row {
+        flex-direction: column;
+    }
+
+    .about-us-content,
+    .mission-vision-content {
+        text-align: center;
+    }
+
+    .stats {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: 1.75rem;
+    }
+
+    .stat-percentage {
+        font-size: 2rem;
+    }
+
+    .mission-vision-content p {
+        font-size: 0.875rem;
+    }
+}

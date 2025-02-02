@@ -1,0 +1,54 @@
+<div id="flash-message-container" class="d-flex justify-content-center">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-messages" class="alert-box text-center p-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} text-dark bg-white border-0 mb-2">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<style>
+    #flash-message-container {
+        position: fixed;
+        top: 20px;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #flash-messages {
+        max-width: 400px;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 0.25rem;
+        box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+    }
+    .alert {
+        padding: 10px;
+        margin: 0;
+        border-radius: 0.25rem;
+        font-size: 0.875rem;
+    }
+</style>
+
+<script>
+    window.onload = function() {
+        setTimeout(function() {
+            const flashMessages = document.getElementById('flash-messages');
+            if (flashMessages) {
+                flashMessages.style.transition = 'opacity 1s ease-out';
+                flashMessages.style.opacity = '0';
+                setTimeout(function() {
+                    flashMessages.remove();
+                }, 1000);
+            }
+        }, 1200); // Adjust this value to change how long the message stays visible
+    };
+</script>
