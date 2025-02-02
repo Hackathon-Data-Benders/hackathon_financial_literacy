@@ -1,15 +1,15 @@
 :root {
-    --background-color: #1a1a1a;
-    --primary-color: #8e44ad;
-    --primary-hover-color: #732d91;
-    --form-background-color: #2c2c2c;
-    --form-placeholder-color: #b3b3b3;
-    --text-color: #fff;
-    --navbar-logo-width: 100px;
+    --background-color: #84AF9B;
+    --primary-color: #84AF9B;
+    --primary-hover-color: rgba(240 155 147);
+    --form-background-color: rgba(0 0 0.7);
+    --form-placeholder-color: #84AF9B;
+    --text-color: #ffffff;
+    --navbar-logo-width: 50px;
     --navbar-logo-height: auto;
-    --color-1: #351f5d;
-    --color-2: #764faf;
-    --color-3: #e3c6ff;
+    --color-1: #b3b3b3;
+    --color-2: #b3b3b3;
+    --color-3: #b3b3b3;
 }
 
 body {
@@ -20,6 +20,7 @@ body {
 .navbar-brand .logo {
     width: var(--navbar-logo-width);
     height: var(--navbar-logo-height);
+    font-weight: bold;
 }
 
 .navbar-brand {
@@ -32,7 +33,7 @@ body {
 }
 
 .nav-link:hover {
-    color: var(--primary-color);
+    color: rgba(240 155 147);
 }
 
 h2 {
@@ -59,9 +60,9 @@ h2 {
 }
 
 .hero-section {
-    background: url('/static/src/Background.png') no-repeat center center/cover;
+    background: url('/static/src/Background1.png') no-repeat center center/cover;
     height: 100vh;
-    color: var(--text-color);
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .hero-title {
@@ -76,7 +77,7 @@ h2 {
 
 .journey-section {
     min-height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7); /* A slight overlay for readability */
+    background-color: rgba(240 155 147); /* A slight overlay for readability */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,7 +92,7 @@ h2 {
 .journey-section .card {
     background-color: var(--form-background-color);
     border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(240 155 123);
     margin-bottom: 20px;
 }
 
@@ -146,14 +147,15 @@ h2 {
 }
 
 .about-us-section {
-    background: url('/static/src/Background.png') no-repeat center center/cover;
+    background: url('/static/src/Background1.png') no-repeat center center/cover;
     padding: 60px 0;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .section-title {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #ffffff;
+    color: rgba(0, 0, 0, 0.7);
     margin-bottom: 20px;
 }
 
@@ -171,7 +173,7 @@ h2 {
 .stat-percentage {
     font-size: 2.5rem;
     font-weight: bold;
-    background: linear-gradient(to right, #8e44ad, #732d91);
+    background: linear-gradient(to right, #84AF9B, #71b495);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-right: 15px;
@@ -179,7 +181,7 @@ h2 {
 
 .stat-item p {
     font-size: 1rem;
-    color: #ffffff;
+    color: #0b0b0b;
 }
 .about-us-full-section {
     padding: 40px 20px;
@@ -193,13 +195,6 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 15px;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 20px;
 }
 
 .mission-vision-content p {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learn - Pluotos</title>
+    <title>Learn - WealthWhiz</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ url_for('static',filename='style.css') }}" rel="stylesheet">
     <style>
@@ -167,12 +167,12 @@
     
                 // Append the AI's response
                 if (data.overview === "") {
-                    botMessage = `<div><strong>Pluotos:</strong> ${data.follow_up}</div>`;
+                    botMessage = `<div><strong>WealthWhiz:</strong> ${data.follow_up}</div>`;
                 } else if (data.follow_up === "") {
-                    botMessage = `<div><strong>Pluotos:</strong> ${data.overview}</div>`;
+                    botMessage = `<div><strong>WealthWhiz:</strong> ${data.overview}</div>`;
                 } else {
-                    botMessage = `<div><strong>Pluotos:</strong> ${data.overview}</div>
-                                  <div><strong>Pluotos:</strong> ${data.follow_up}</div>`;
+                    botMessage = `<div><strong>WealthWhiz:</strong> ${data.overview}</div>
+                                  <div><strong>WealthWhiz:</strong> ${data.follow_up}</div>`;
                 }
     
                 document.getElementById('chat-history').innerHTML += botMessage;

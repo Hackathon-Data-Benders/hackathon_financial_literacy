@@ -3,22 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pluotos - AI-Powered Financial Literacy Platform</title>
+    <title>WealthWhiz - AI-Powered Financial Literacy Platform</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="{{ url_for('static',filename='style.css') }}" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar -->
-    {% include 'navbar.html' %}
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="/static/src/logo.png" alt="WealthWhiz Logo" class="logo">
+                <span style="font-weight: bold;">WealthWhiz</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('about') }}">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary me-2">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
     
     <!-- Hero Section -->
     <section class="hero-section d-flex align-items-center justify-content-center text-center">
         <div>
             <h1 class="hero-title">AI-Powered Financial Literacy Platform</h1>
-            <p class="hero-subtitle">Empowering Women and Youth for Inclusive Growth Building a Future of Financial Independence</p>
+            <p class="hero-subtitle">Empowering Your Financial Future with Intelligent Insights</p>
             <div>
-                <a href="{{ url_for('learn') }}" class="btn btn-primary btn-lg">Start Learning</a>
-                <a href="{{ url_for('about') }}" class="btn btn-outline-light btn-lg">Learn More</a>
+                <a href="#" class="btn btn-primary btn-lg">Start Learning</a>
+                <a href="#" class="btn btn-outline-light btn-lg">Learn More</a>
             </div>
         </div>
     </section>
@@ -42,7 +71,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Browse Through the Modules</h5>
                         <p class="card-text flex-grow-1">Discover a Wide Range of Financial Topics and Start Learning</p>
-                        <a href="{{ url_for('learn') }}" class="btn btn-primary mt-auto">Learn More</a>
+                        <a href="#" class="btn btn-primary mt-auto">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -51,7 +80,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">Track Your Progress</h5>
                         <p class="card-text flex-grow-1">Keep Track of Your Learning Journey and Achievements</p>
-                        <a href="{{ url_for('profile') }}" class="btn btn-primary mt-auto">Learn More</a>
+                        <a href="#" class="btn btn-primary mt-auto">Learn More</a>
                     </div>
                 </div>
             </div>
@@ -67,22 +96,22 @@
                 <div class="col-md-6">
                     <h2 class="section-title">About Us</h2>
                     <p>
-                        At Pluotos, we are dedicated to bridging the gap in financial literacy among underserved populations, particularly women and youth. Our mission is to empower these communities by providing them with the knowledge and tools they need to achieve financial independence and contribute to inclusive growth.
+                        At WealthWhiz, we are dedicated to bridging the gap in financial literacy among underserved populations, particularly women and youth. Our mission is to empower these communities by providing them with the knowledge and tools they need to achieve financial independence and contribute to inclusive growth.
                     </p>
                 </div>
                 <div class="col-md-6">
                     <div class="stats">
                         <div class="stat-item">
-                            <h3 class="stat-percentage">80%</h3>
-                            <p>women in India struggle with financial literacy.</p>
+                            <h3 class="stat-percentage">33%</h3>
+                            <p>of adults in India are financially literate, which is significantly lower compared to countries like the UK (67%), Singapore (59%), and the US (57%).</p>
                         </div>
                         <div class="stat-item">
-                            <h3 class="stat-percentage">62%</h3>
-                            <p>of Indian women do not own bank accounts or have limited access to banking services.</p>
+                            <h3 class="stat-percentage">35%</h3>
+                            <p>of bank accounts in India are owned by women, but they hold only 20% of the total deposits.</p>
                         </div>
                         <div class="stat-item">
-                            <h3 class="stat-percentage">16%</h3>
-                            <p>of teenagers in India are financially literate, highlighting a significant gap in financial education.</p>
+                            <h3 class="stat-percentage">16.7%</h3>
+                            <p>of Indian teenagers are financially literate, highlighting a significant gap in financial education.</p>
                         </div>
                     </div>
                 </div>
