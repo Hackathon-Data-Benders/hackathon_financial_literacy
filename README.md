@@ -5,7 +5,7 @@
 WealthWhiz is a platform created by Data Benders in ASPIRE SPEED Hackathon 2025 .
 This platform helps below features -
 
- 1. Educational contents about financial jargaons
+ 1. Educational contents about financial jargons
  2. Generates personalized financial plans based on User's requirement
  3. AI powered chatbot - to answer user's query on financial subjects
  4. An interactive platform that helps users plan their budget
